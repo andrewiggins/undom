@@ -21,6 +21,18 @@ const NODE_TYPES = {
 
 function createEnvironment() {
 
+	/**
+	 * @param {Node} node
+	 * @returns {node is Text}
+	 */
+	function isTextNode(node) {
+		return node.nodeType === 3;
+	}
+
+	/**
+	 * @param {Node} node
+	 * @returns {node is Element}
+	 */
 	function isElement(node) {
 		return node.nodeType===1;
 	}
@@ -29,8 +41,10 @@ function createEnvironment() {
 		constructor(nodeType, nodeName) {
 			this.nodeType = nodeType;
 			this.nodeName = nodeName;
-			this.childNodes = [];
 			this.parentNode = null;
+
+			/** @type {Node[]} */
+			this.childNodes = [];
 		}
 		get nextSibling() {
 			let p = this.parentNode;
@@ -72,6 +86,18 @@ function createEnvironment() {
 		}
 		remove() {
 			if (this.parentNode) this.parentNode.removeChild(this);
+		}
+
+		set textContent(text) {
+			this.childNodes.length = 0;
+			this.childNodes.push(new Text(text));
+		}
+		get textContent() {
+			let text = '';
+			for (let child of this.childNodes) {
+				text += isTextNode(child) ? child.nodeValue : child.textContent;
+			}
+			return text;
 		}
 	}
 
