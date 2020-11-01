@@ -34,10 +34,12 @@ function createEnvironment() {
 		get nextSibling() {
 			let p = this.parentNode;
 			if (p) return p.childNodes[findWhere(p.childNodes, this, true, true) + 1];
+			return null;
 		}
 		get previousSibling() {
 			let p = this.parentNode;
 			if (p) return p.childNodes[findWhere(p.childNodes, this, true, true) - 1];
+			return null;
 		}
 		get firstChild() {
 			return this.childNodes[0];
