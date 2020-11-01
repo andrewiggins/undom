@@ -81,10 +81,20 @@ function createEnvironment() {
 			super(3, '#text');					// TEXT_NODE
 			this.nodeValue = text;
 		}
+
+		// Node interface: https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent
 		set textContent(text) {
 			this.nodeValue = text;
 		}
 		get textContent() {
+			return this.nodeValue;
+		}
+
+		// CharacterData interface: https://developer.mozilla.org/en-US/docs/Web/API/CharacterData
+		set data(text) {
+			this.nodeValue = text;
+		}
+		get data() {
 			return this.nodeValue;
 		}
 	}
