@@ -30,6 +30,7 @@ function createEnvironment() {
 			this.nodeType = nodeType;
 			this.nodeName = nodeName;
 			this.childNodes = [];
+			this.parentNode = null;
 		}
 		get nextSibling() {
 			let p = this.parentNode;
