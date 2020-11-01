@@ -45,6 +45,11 @@ function createEnvironment() {
 
 			/** @type {Node[]} */
 			this.childNodes = [];
+
+			// Immediately transition array type to PACKED_ELEMENTS, though this is
+			// unnecessary after the first Element constructor...
+			this.childNodes.push(this);
+			this.childNodes.pop();
 		}
 		get nextSibling() {
 			let p = this.parentNode;
