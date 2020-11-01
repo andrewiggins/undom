@@ -1,5 +1,6 @@
 {
   "name": "undom",
+  "type": "module",
   "amdName": "undom",
   "version": "0.4.0",
   "description": "Minimally viable DOM Document implementation.",
@@ -9,7 +10,7 @@
   "source": "src/undom.js",
   "scripts": {
     "build": "microbundle",
-    "test": "eslint src test && mocha -r esm test/**/*.js",
+    "test": "eslint src test && mocha test/**/*.js",
     "prepare": "npm run -s build && npm run -s test",
     "release": "npm run -s prepare && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish"
   },
@@ -33,7 +34,6 @@
     "chai": "^4.2.0",
     "eslint": "^7.12.1",
     "eslint-config-developit": "^1.2.0",
-    "esm": "^3.2.25",
     "microbundle": "^0.12.4",
     "mocha": "^8.2.0",
     "sinon": "^9.2.1",

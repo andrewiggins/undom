@@ -1,4 +1,4 @@
-import undom from '../src/undom';
+import undom from '../src/undom.js';
 // import { expect } from 'chai';
 
 describe('perf', () => {

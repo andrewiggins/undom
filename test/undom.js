@@ -1,8 +1,11 @@
-import undom from '../src/undom';
-import chai, { expect } from 'chai';
-import { spy } from 'sinon';
+import undom from '../src/undom.js';
+import chai from 'chai';
+import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 chai.use(sinonChai);
+
+const { expect } = chai;
+const { spy } = sinon;
 
 describe('undom', () => {
 	it('should create a Document', () => {
