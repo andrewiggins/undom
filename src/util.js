@@ -15,7 +15,7 @@ export function splice(arr, item, add, byValue) {
 export function findWhere(arr, fn, returnIndex, byValue) {
 	let i = arr.length;
 	while (i--) if (byValue ? arr[i]===fn : fn(arr[i])) break;
-	return returnIndex ? i : arr[i];
+	return returnIndex ? i : i < 0 ? undefined : arr[i];
 }
 
 export function createAttributeFilter(ns, name) {
