@@ -1,7 +1,6 @@
 import {
 	assign,
 	toLower,
-	splice,
 	findWhere,
 	createAttributeFilter
 } from './util.js';
@@ -74,8 +73,16 @@ function createEnvironment() {
 		insertBefore(child, ref) {
 			child.remove();
 			child.parentNode = this;
-			if (ref) splice(this.childNodes, ref, child, true);
-			else this.childNodes.push(child);
+			if (ref) {
+				let index = this.childNodes.length;
+				while (index--) if (this.childNodes[index] == ref) break;
+				if (index !== -1) {
+					this.childNodes.splice(index, 0, child);
+				}
+			}
+			else {
+				this.childNodes.push(child);
+			}
 			return child;
 		}
 		replaceChild(child, ref) {
@@ -86,7 +93,11 @@ function createEnvironment() {
 			}
 		}
 		removeChild(child) {
-			splice(this.childNodes, child, false, true);
+			let index = this.childNodes.length;
+			while (index--) if (this.childNodes[index] == child) break;
+			if (index !== -1) {
+				this.childNodes.splice(index, 1);
+			}
 			return child;
 		}
 		remove() {
@@ -174,7 +185,17 @@ function createEnvironment() {
 			return attr && attr.value;
 		}
 		removeAttributeNS(ns, name) {
-			splice(this.attributes, createAttributeFilter(ns, name), false, false);
+			let index = -1;
+			for (let i = 0; i < this.attributes.length; i++) {
+				let attr = this.attributes[i];
+				if (attr.ns == ns && toLower(attr.name) == toLower(name)) {
+					index = i;
+					break;
+				}
+			}
+			if (index !== -1) {
+				this.attributes.splice(index, 1);
+			}
 		}
 
 		addEventListener(type, handler) {
@@ -187,7 +208,15 @@ function createEnvironment() {
 			}
 		}
 		removeEventListener(type, handler) {
-			splice(this.__handlers.get(toLower(type)), handler, false, true);
+			const handlers = this.__handlers.get(toLower(type));
+			if (handlers == null) {
+				return;
+			}
+			let index = handlers.length;
+			while (index--) if (handlers[index] == handler) break;
+			if (index !== -1) {
+				handlers.splice(index, 1);
+			}
 		}
 		dispatchEvent(event) {
 			let t = event.target = this,
