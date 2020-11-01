@@ -9,6 +9,14 @@ globalThis.window = document.defaultView;
 const main = globalThis.document.createElement("div");
 document.body.appendChild(main);
 
+const root = globalThis.document.createElement("div");
+document.body.appendChild(root);
+
 globalThis.document.getElementById = function (id) {
-	return id === "main" ? main : null;
+	return id === "main" ? main : id == "root" ? root : null;
 };
+
+// @ts-ignore
+globalThis.requestAnimationFrame = function (cb) {
+	return setTimeout(() => cb(Date.now()), 0)
+}

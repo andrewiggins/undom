@@ -5,7 +5,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "deopts": "v8-deopt-viewer ./src/02_replace1k.mjs --open"
+    "02": "v8-deopt-viewer ./src/02_replace1k.mjs --open",
+    "many": "v8-deopt-viewer ./src/many_updates.mjs --open"
   },
   "author": "",
   "license": "ISC",
