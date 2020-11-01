@@ -9,7 +9,7 @@
   "unpkg": "dist/undom.umd.js",
   "source": "src/undom.js",
   "scripts": {
-    "build": "microbundle",
+    "build": "microbundle --no-compress --raw --target node",
     "test": "eslint src test && mocha test/**/*.js",
     "prepare": "npm run -s build && npm run -s test",
     "release": "npm run -s prepare && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish"

@@ -1,0 +1,19 @@
+{
+  "name": "undom-benches",
+  "type": "module",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "deopts": "v8-deopt-viewer ./src/02_replace1k.mjs --open"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "keyed": "file:../../../preactjs/keyed",
+    "undom": "file:.."
+  },
+  "devDependencies": {
+    "v8-deopt-viewer": "^0.2.1"
+  }
+}
