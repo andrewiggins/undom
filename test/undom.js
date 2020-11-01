@@ -7,6 +7,10 @@ chai.use(sinonChai);
 const { expect } = chai;
 const { spy } = sinon;
 
+function getHandlers(el) {
+	return Object.fromEntries(el.__handlers.entries());
+}
+
 describe('undom', () => {
 	it('should create a Document', () => {
 		let document = undom();
@@ -165,11 +169,11 @@ describe('undom', () => {
 			it('should append listener to event list', () => {
 				let el = document.createElement('div');
 
-				expect(el.__handlers).to.eql({});
+				expect(getHandlers(el)).to.eql({});
 
 				let fn = () => {};
 				el.addEventListener('type', fn);
-				expect(el.__handlers).to.eql({ type: [fn] });
+				expect(getHandlers(el)).to.eql({ type: [fn] });
 			});
 
 			it('should allow duplicates', () => {
@@ -177,7 +181,7 @@ describe('undom', () => {
 				let fn = () => {};
 				el.addEventListener('type', fn);
 				el.addEventListener('type', fn);
-				expect(el.__handlers).to.eql({ type: [fn, fn] });
+				expect(getHandlers(el)).to.eql({ type: [fn, fn] });
 			});
 
 			it('should normalize type', () => {
@@ -186,7 +190,7 @@ describe('undom', () => {
 				el.addEventListener('TYPE', fn);
 				el.addEventListener('TyPe', fn);
 				el.addEventListener('type', fn);
-				expect(el.__handlers).to.eql({ type: [fn, fn, fn] });
+				expect(getHandlers(el)).to.eql({ type: [fn, fn, fn] });
 			});
 		});
 
@@ -197,7 +201,7 @@ describe('undom', () => {
 				el.addEventListener('type', fn);
 
 				el.removeEventListener('type', fn);
-				expect(el.__handlers).to.eql({ type: [] });
+				expect(getHandlers(el)).to.eql({ type: [] });
 			});
 
 			it('should normalize type', () => {
@@ -210,7 +214,7 @@ describe('undom', () => {
 				el.removeEventListener('TYPE', fn);
 				el.removeEventListener('TyPe', fn);
 				el.removeEventListener('type', fn);
-				expect(el.__handlers).to.eql({ type: [] });
+				expect(getHandlers(el)).to.eql({ type: [] });
 			});
 
 			it('should remove only one listener at a time', () => {
@@ -220,10 +224,10 @@ describe('undom', () => {
 				el.addEventListener('type', fn);
 
 				el.removeEventListener('type', fn);
-				expect(el.__handlers).to.eql({ type: [fn] });
+				expect(getHandlers(el)).to.eql({ type: [fn] });
 
 				el.removeEventListener('type', fn);
-				expect(el.__handlers).to.eql({ type: [] });
+				expect(getHandlers(el)).to.eql({ type: [] });
 			});
 		});
 

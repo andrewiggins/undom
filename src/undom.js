@@ -93,9 +93,11 @@ function createEnvironment() {
 		constructor(nodeType, nodeName, ownerDocument) {
 			super(nodeType || 1, nodeName);		// ELEMENT_NODE
 			this.attributes = [];
-			this.__handlers = {};
 			this.style = {};
 			this.ownerDocument = ownerDocument;
+
+			/** @type {Map<string, Array<(e: Event) => void | boolean>>} */
+			this.__handlers = new Map();
 		}
 
 		get tagName() { return this.nodeName; }
@@ -133,10 +135,16 @@ function createEnvironment() {
 		}
 
 		addEventListener(type, handler) {
-			(this.__handlers[toLower(type)] || (this.__handlers[toLower(type)] = [])).push(handler);
+			type = toLower(type);
+			if (this.__handlers.has(type)) {
+				this.__handlers.get(type).push(handler);
+			}
+			else {
+				this.__handlers.set(type, [handler]);
+			}
 		}
 		removeEventListener(type, handler) {
-			splice(this.__handlers[toLower(type)], handler, false, true);
+			splice(this.__handlers.get(toLower(type)), handler, false, true);
 		}
 		dispatchEvent(event) {
 			let t = event.target = this,
@@ -144,7 +152,7 @@ function createEnvironment() {
 				l, i;
 			do {
 				event.currentTarget = t;
-				l = t.__handlers && t.__handlers[toLower(event.type)];
+				l = t.__handlers && t.__handlers.get(toLower(event.type));
 				if (l) for (i=l.length; i--; ) {
 					if ((l[i].call(t, event) === false || event._end) && c) {
 						event.defaultPrevented = true;
