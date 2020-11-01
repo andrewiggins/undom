@@ -91,11 +91,12 @@ function createEnvironment() {
 
 
 	class Element extends Node {
-		constructor(nodeType, nodeName, ownerDocument) {
+		constructor(nodeType, nodeName, ownerDocument, ns = 'http://www.w3.org/1999/xhtml') {
 			super(nodeType || 1, nodeName);		// ELEMENT_NODE
 			this.attributes = [];
 			this.style = {};
 			this.ownerDocument = ownerDocument;
+			this.namespaceURI = ns;
 
 			/** @type {Map<string, Array<(e: Event) => void | boolean>>} */
 			this.__handlers = new Map();
@@ -187,6 +188,9 @@ function createEnvironment() {
 		constructor() {
 			super(9, '#document');			// DOCUMENT_NODE
 			this.defaultView = new DefaultView(this);
+			this.documentElement = null;
+			this.head = null;
+			this.body = null;
 		}
 
 		get document() {
@@ -199,7 +203,7 @@ function createEnvironment() {
 
 		createElementNS(ns, type) {
 			let element = this.createElement(type);
-			element.namespace = ns;
+			element.namespaceURI = ns;
 			return element;
 		}
 
