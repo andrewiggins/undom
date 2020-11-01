@@ -88,11 +88,12 @@ function createEnvironment() {
 
 
 	class Element extends Node {
-		constructor(nodeType, nodeName) {
+		constructor(nodeType, nodeName, ownerDocument) {
 			super(nodeType || 1, nodeName);		// ELEMENT_NODE
 			this.attributes = [];
 			this.__handlers = {};
 			this.style = {};
+			this.ownerDocument = ownerDocument;
 		}
 
 		get tagName() { return this.nodeName; }
@@ -182,9 +183,7 @@ function createEnvironment() {
 		}
 
 		createElement(type) {
-			let element = new Element(null, String(type).toUpperCase());
-			element.ownerDocument = this;
-			return element;
+			return new Element(null, String(type).toUpperCase(), this);
 		}
 
 		createElementNS(ns, type) {
